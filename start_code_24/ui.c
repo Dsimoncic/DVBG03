@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
  
 #define MAX_SIZE 100
 
@@ -28,7 +29,7 @@ static char ui_get_choice()
 {
 	char buf[3];
 
-	printf("input> ");
+	printf("Enter option> ");
 	return read_line(buf, 3) ? buf[0] : 0;
 }
 
@@ -54,8 +55,18 @@ static void ui_menu()
 	const char *options[] = {
 		"Menu",
 		"Exit\n",
+
 		"Bubble sort best case",
 		"Bubble sort worst case",
+		"Bubble sort average case\n",
+
+		"Quick sort best case",
+		"Quick sort worst case",
+		"Quick sort average case\n",
+
+		"Insertion sort best case",
+		"Insertion sort worst case",
+		"Insertion sort average case",
 		// TODO: complete menu
 	};
 
@@ -72,7 +83,7 @@ void ui_run()
 	bool running, show_menu;
 	result_t result[RESULT_ROWS];
 
-	char arraysize [MAX_SIZE];
+	/* char arraysize [MAX_SIZE];
 	int SIZE_ARRAY=0;
 	show_menu = true;
 	bool getsize = false;
@@ -108,15 +119,17 @@ void ui_run()
 	if(getsize == true) 
 	{
 		running = true;
-	}
+	} */
 
-
+	running = true;
+	show_menu = true;
 
 
 	while (running) {
-		printf("%d",SIZE_ARRAY);
+		/* printf("%d",SIZE_ARRAY); */
 		if (show_menu) {
 			show_menu = false;
+			printf("\n");
 			ui_menu();
 		}
 		switch (ui_get_choice()) {
@@ -130,13 +143,227 @@ void ui_run()
 			// Bubble sort
 			case 'c':
 				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
-				printf("todo> implement BE + present results in FE\n");
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+
+				printf("Bubble sort:  Best case");
+				printf("\n");
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+
 				break;
 
 			case 'd':
 				benchmark(bubble_sort_t, worst_t, result, RESULT_ROWS);
-				printf("todo> implement WE + present results in FE\n");
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+				printf("Bubble sort: Worst case\n");
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+
 				break;
+
+			case 'e':
+				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+				printf("Bubble sort: Average case\n");
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+
+				break;
+
+			case 'f':
+				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+				printf("Quick sort: Best case\n");
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+				break;
+
+		case 'g':
+				benchmark(quick_sort_t, worst_t, result, RESULT_ROWS);
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+				printf("Quick sort: Worst case\n");
+
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+				break;
+
+			case 'h':
+				benchmark(quick_sort_t, average_t, result, RESULT_ROWS);
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+				printf("Quick sort: Average case\n");
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+				break;
+
+			case 'i':
+				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+				printf("Insertion sort: Best case\n");
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+				break;
+
+			case 'j':
+				benchmark(insertion_sort_t, worst_t, result, RESULT_ROWS);
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+				printf("Insertion sort: Worst case\n");
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+				break;
+
+			case 'k':
+				benchmark(insertion_sort_t, average_t, result, RESULT_ROWS);
+
+				printf("\n");
+				ui_line('=', MENU_WIDTH);
+				printf("Insertion sort: Average case\n");
+				printf("%-8s %-12s %-15s %-15s %-15s\n", "Size", "Time T(s)", "T/logn", "T/n", "T/nlogn");
+				ui_line('~', RESULTS_WIDTH);
+
+				for(int i = 0; i < RESULT_ROWS; i++) 
+				{
+					int n = result[i].size;
+					double T = result[i].time;
+					double logn = log2((double)n);
+
+					double T_logn = T / logn;
+					double T_n = T / (double)n;
+					double T_nlogn = T / (n * logn);
+
+					printf("%-8d %-12.6f %-15.6e %-15.6e %-15.6e\n", n, T, T_logn, T_n, T_nlogn);
+				}
+				ui_line('-', RESULTS_WIDTH);
+				break;
+
+
 			// Invalid input
 			default:
 				show_menu = false;
